@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
 from sklearn.linear_model import LogisticRegression
 
 # --- Page Config ---
@@ -13,7 +12,9 @@ st.write("Enter passenger details to predict survival probability based on histo
 # --- Load & Train Model (Runs instantly) ---
 @st.cache_data
 def load_and_train():
-    df = sns.load_dataset('titanic')[['pclass', 'sex', 'age', 'fare', 'survived']].dropna()
+    # Load data directly from URL to avoid needing seaborn installed
+    df = pd.read_csv("https://raw.githubusercontent.com/mwaskom/seaborn-data/master/titanic.csv")
+    df = df[['pclass', 'sex', 'age', 'fare', 'survived']].dropna()
     df['sex'] = df['sex'].map({'male': 0, 'female': 1})
     X = df.drop('survived', axis=1)
     y = df['survived']
